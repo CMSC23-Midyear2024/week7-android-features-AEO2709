@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:week_7_android_features/addContact.dart';
 import 'contact.dart';
 
 void main() => runApp(const MyApp());
@@ -10,6 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      onGenerateRoute: (settings) {
+        if(settings.name == "/addContact"){
+          return MaterialPageRoute(builder: (context) {
+            return AddContactsPage();
+          });
+        }
+      },
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
               iconTheme: IconThemeData(color: Colors.white),
@@ -33,7 +41,7 @@ class ContactList extends StatefulWidget {
 }
 
 class _ContactListState extends State<ContactList> {
-  List<Contact>? _contacts;
+  List<Contact>? _contacts = [];
   bool _permissionDenied = false;
 
   @override
@@ -59,10 +67,17 @@ class _ContactListState extends State<ContactList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('My Contacts')), body: _body());
+        appBar: AppBar(title: const Text('My Contacts')), 
+        body: _body(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            Navigator.pushNamed(context, "/addContact");
+          }, 
+          child: Icon(Icons.contact_mail),),
+    );
   }
 
-  Widget _body() {
+  Widget _body() { 
     if (_permissionDenied) {
       return const Center(child: Text('Permission denied'));
     }
