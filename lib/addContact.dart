@@ -17,22 +17,6 @@ class AddContactsPage extends StatefulWidget {
 
 class _AddContactsPageState extends State<AddContactsPage> {
 
-  Permission permission = Permission.camera;
-  PermissionStatus permissionStatus = PermissionStatus.denied;
-  File? imageFile;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _listenForPermissionStatus();
-  }
-
-  void _listenForPermissionStatus() async {
-    final status = await permission.status;
-    setState(() => permissionStatus = status);
-  }
-
   Contact newContact = Contact();
 
   TextEditingController firstNameController = TextEditingController();
@@ -59,15 +43,6 @@ class _AddContactsPageState extends State<AddContactsPage> {
                       children: [
                         IconButton(
                           onPressed: () async {
-                            if (permissionStatus == PermissionStatus.granted) {
-                              final image = await ImagePicker()
-                                  .pickImage(source: ImageSource.camera);
-                              setState(() {
-                                imageFile = image == null ? null : File(image.path);
-                              });
-                            } else {
-                              requestPermission();
-                            }
                           }, 
                           icon: Icon(Icons.camera_alt, size: 80),
                         )
